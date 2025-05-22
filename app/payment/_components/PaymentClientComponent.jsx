@@ -24,7 +24,7 @@ export default function PaymentPage() {
       router.push('/payment');  // Redirect to a dedicated success page
     } else if (paymentStatus === 'FAILED') {
       alert('Payment failed. Please try again.');
-      router.push('/billing');
+      router.push('/');
     }
   }, [paymentStatus]);
 
