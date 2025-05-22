@@ -1,21 +1,36 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
-import React from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
-function PaymentSuccessPage() {
+export default function PaymentPage() {
   const searchParams = useSearchParams();
-  const uid = searchParams.get('uid');
+  const router = useRouter();
+
+  const orderId = searchParams.get('order_id');
+  const paymentStatus = searchParams.get('payment_status');
+  const userId = searchParams.get('uid');
   const credits = searchParams.get('credits');
 
+  useEffect(() => {
+    if (paymentStatus === 'CANCELLED') {
+      // Redirect back to billing page or show a message
+      alert('Payment was cancelled. You were not charged.');
+      router.push('/billing');
+    } else if (paymentStatus === 'SUCCESS') {
+      // Handle success - maybe credit the user here
+      alert('Payment successful! Credits will be added.');
+    } else if (paymentStatus === 'FAILED') {
+      alert('Payment failed. Please try again.');
+      router.push('/billing');
+    }
+  }, [paymentStatus]);
+
   return (
-    <div style={{ padding: '2rem', textAlign: 'center' }}>
-      <h1>✅ Payment Successful!</h1>
-      <p>Thank you for your payment.</p>
-      {uid && <p>User ID: {uid}</p>}
-      {credits && <p>Credits Purchased: {credits}</p>}
+    <div className="p-6">
+      <h1 className="text-2xl font-bold">Processing Payment...</h1>
+      <p>Order ID: {orderId}</p>
+      <p>Status: {paymentStatus}</p>
     </div>
   );
 }
-
-export default PaymentSuccessPage;
