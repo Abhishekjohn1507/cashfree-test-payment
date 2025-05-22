@@ -50,7 +50,7 @@ const CashfreeButton = ({ plan, user }) => {
       if (sessionId) {
         await cashfree.checkout({
           paymentSessionId: sessionId,
-          redirectTarget: '_blank',
+          redirectTarget: '_modal',
         });
       } else {
         throw new Error('Missing payment_session_id in response from your API');

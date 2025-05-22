@@ -17,10 +17,11 @@ export default function PaymentPage() {
     if (paymentStatus === 'CANCELLED') {
       // Redirect back to billing page or show a message
       alert('Payment was cancelled. You were not charged.');
-      router.push('/billing');
+      router.push('/');
     } else if (paymentStatus === 'SUCCESS') {
       // Handle success - maybe credit the user here
       alert('Payment successful! Credits will be added.');
+      router.push('/payment');  // Redirect to a dedicated success page
     } else if (paymentStatus === 'FAILED') {
       alert('Payment failed. Please try again.');
       router.push('/billing');
