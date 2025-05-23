@@ -42,7 +42,7 @@ const CashfreeButton = ({ plan, user }) => {
           customer_phone: user.phone || '9999999999',
           customer_name: user.name || 'Guest User',
         },
-        return_url: `${process.env.NEXT_PUBLIC_BASE_URL}/payment?order_id=${orderId}&uid=${user.id}&credits=${plan.credits}`,
+        return_url: `${process.env.NEXT_PUBLIC_BASE_URL}/payment?order_id=${orderId}`,
       });
 
       const sessionId = res?.data?.payment_session_id;
@@ -50,7 +50,7 @@ const CashfreeButton = ({ plan, user }) => {
       if (sessionId) {
         await cashfree.checkout({
           paymentSessionId: sessionId,
-          redirectTarget: '_modal',
+          redirectTarget: '_self',
         });
       } else {
         throw new Error('Missing payment_session_id in response from your API');

@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { NextResponse } from 'next/server';
 
 export async function POST(req) {
@@ -12,7 +13,6 @@ export async function POST(req) {
       credits,
     } = body;
 
-    // Validate required fields
     if (
       !order_amount ||
       !order_id ||
@@ -33,15 +33,14 @@ export async function POST(req) {
       order_meta: {
         return_url:
           return_url ||
-          `${process.env.NEXT_PUBLIC_BASE_URL}/payment?uid=${user_id}&credits=${credits}`,
-        notify_url: 'https://webhook.site/your-webhook-url', // Replace with your actual webhook URL
+          `${process.env.NEXT_PUBLIC_BASE_URL}/payment?uid=${user_id}`,
+        notify_url: 'https://webhook.site/your-webhook-url',
       },
     };
 
-    // Log the order data for debugging
     console.log('Sending to Cashfree:', JSON.stringify(orderData, null, 2));
 
-    const response = await fetch('https://sandbox.cashfree.com/pg/orders', {
+    const response = await axios('https://sandbox.cashfree.com/pg/orders', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -49,12 +48,11 @@ export async function POST(req) {
         'x-client-secret': process.env.CASHFREE_SANDBOX_SECRET_KEY,
         'x-api-version': '2023-08-01',
       },
-      body: JSON.stringify(orderData),
+      data: orderData,
     });
 
-    const data = await response.json();
+    const data = response.data;
 
-    // Log the response from Cashfree for debugging
     console.log('Received from Cashfree:', JSON.stringify(data, null, 2));
 
     if (!data.payment_session_id) {
