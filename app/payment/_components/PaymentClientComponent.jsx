@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import axios from 'axios';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 export default function PaymentClientComponent() {
   const searchParams = useSearchParams();
@@ -77,6 +79,11 @@ export default function PaymentClientComponent() {
           )}
         </>
       )}
+      <div>
+        <Button asChild>
+  <Link href="/">Back to Home</Link>
+</Button>
+      </div>
     </div>
   );
 }
